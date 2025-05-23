@@ -12,7 +12,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -20,7 +22,14 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
+      ],
+      "package": "com.octagomez.expoqrscanner",
+      "compileSdkVersion": 34,
+      "targetSdkVersion": 34
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -34,6 +43,14 @@
           "savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "5d4bd8af-8cbc-4fde-a31b-527d5961e934"
+      }
+    }
   }
 }
