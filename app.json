@@ -2,8 +2,14 @@
   "expo": {
     "name": "expo-qr-scanner",
     "slug": "expo-qr-scanner",
-    "scheme": "your-app-scheme",
+    "scheme": "lectoracodesrn",
     "version": "1.0.0",
+    "sdkVersion": "53.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -19,8 +25,6 @@
       "supportsTablet": true
     },
     "android": {
-      "compileSdkVersion": 33,
-      "targetSdkVersion": 33,
       "package": "com.octagomez.expoqrscanner",
       "permissions": [
         "android.permission.READ_EXTERNAL_STORAGE",
