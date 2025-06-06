@@ -8,7 +8,8 @@ import React from 'react';
 import socketIOClient from 'socket.io-client';
 
 //const ENDPOINT = "https://ocr.desarrollosia.com/upload"; // Reemplaza con tu URL del servidor socket.io
-const ENDPOINT = "http://192.168.0.33:5000/upload"; // Reemplaza con tu URL del servidor socket.io
+const ENDPOINT = "https://octa.desarrollosia.com/upload"; // Reemplaza con tu URL del servidor socket.io
+//const ENDPOINT = "http://192.168.0.33:5000/upload"; // Reemplaza con tu URL del servidor socket.io
 
 // Función para reproducir sonido
 const playSound = async (soundFile: any) => {
