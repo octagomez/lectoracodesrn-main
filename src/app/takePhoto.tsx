@@ -3,10 +3,29 @@ import { useRef, useEffect, useState } from "react";
 import { Button, StyleSheet, Text, TouchableOpacity, View, ScrollView } from "react-native";
 import * as MediaLibrary from 'expo-media-library';
 import * as FileSystem from 'expo-file-system';
+import { Audio } from 'expo-av';
 import React from 'react';
 import socketIOClient from 'socket.io-client';
 
-const ENDPOINT = "https://ocr.desarrollosia.com/upload"; // Reemplaza con tu URL del servidor socket.io
+//const ENDPOINT = "https://ocr.desarrollosia.com/upload"; // Reemplaza con tu URL del servidor socket.io
+const ENDPOINT = "https://octa.desarrollosia.com/upload"; // Reemplaza con tu URL del servidor socket.io
+//const ENDPOINT = "http://192.168.0.33:5000/upload"; // Reemplaza con tu URL del servidor socket.io
+
+// Función para reproducir sonido
+const playSound = async (soundFile: any) => {
+	try {
+		const { sound } = await Audio.Sound.createAsync(soundFile);
+		await sound.playAsync();
+		// Liberar el recurso después de reproducir
+		sound.setOnPlaybackStatusUpdate(async (status) => {
+			if (status.isLoaded && status.didJustFinish) {
+				await sound.unloadAsync();
+			}
+		});
+	} catch (error) {
+		console.error('Error al reproducir sonido:', error);
+	}
+};
 
 // Guardar la imagen en el almacenamiento interno
 const saveImage = async (imageUri: string) => {
@@ -43,22 +62,14 @@ const TakePhoto: React.FC = () => {
 	const [apiResult, setApiResult] = useState<any>(null);
 	const [socket, setSocket] = useState<any>(null);
 
-	/*
-	// useEffect para el socket
+	// Cargar los sonidos al iniciar
 	useEffect(() => {
-		const newSocket = socketIOClient(ENDPOINT);
-		newSocket.emit('subscribe');
-		
-		newSocket.on('notification', (data: any) => {
-			setNotifications(prev => [...prev, data]);
-			setLastMessage(data.message || data);
+		Audio.setAudioModeAsync({
+			playsInSilentModeIOS: true,
+			staysActiveInBackground: true,
 		});
-
-		return () => {
-			newSocket.disconnect();
-		};
 	}, []);
-    */
+
 	if (!permission) {
 		// Camera permissions are still loading.
 		return <View />;
@@ -78,6 +89,10 @@ const TakePhoto: React.FC = () => {
 
 	async function captureHandler() {
 		try {
+			setApiResult(null);
+			// Reproducir sonido de captura
+			await playSound(require('../../assets/sounds/camera-shutter.wav'));
+
 			const photo = await cameraRef.current?.takePictureAsync();
 			if (photo) {
 				const savedUri = await saveImage(photo.uri);
@@ -90,7 +105,7 @@ const TakePhoto: React.FC = () => {
 					name: 'photo.jpg'
 				} as any);
 
-				const response = await fetch('https://ocr.desarrollosia.com/upload', {
+				const response = await fetch(ENDPOINT, {
 					method: 'POST',
 					body: formData,
 					headers: {
@@ -101,6 +116,8 @@ const TakePhoto: React.FC = () => {
 				if (response.ok) {
 					const result = await response.json();
 					setApiResult(result); // Actualizamos el estado con el resultado
+					// Reproducir sonido de éxito al recibir datos
+					await playSound(require('../../assets/sounds/success.wav'));
 				}
 			}
 		} catch (error) {
