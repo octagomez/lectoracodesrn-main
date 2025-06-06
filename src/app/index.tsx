@@ -12,12 +12,14 @@ const Home: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Pressable style={styles.button} onPress={startScan}>
-        <Text style={styles.text}>Scan code</Text>
-      </Pressable>
-      <Pressable style={styles.button} onPress={takePhoto}>
-        <Text style={styles.text}>Take a Photo</Text>
-      </Pressable>
+      <View style={styles.buttonContainer}>
+        <Pressable style={styles.button} onPress={startScan}>
+          <Text style={styles.text}>Scan code</Text>
+        </Pressable>
+        <Pressable style={styles.button} onPress={takePhoto}>
+          <Text style={styles.text}>Take a Photo</Text>
+        </Pressable>
+      </View>
     </View>
   );
 };
@@ -25,17 +27,25 @@ const Home: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#fff',
+  },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 40,
+    left: 0,
+    right: 0,
+    paddingHorizontal: 20,
+    gap: 16,
   },
   button: {
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 12,
+    paddingVertical: 16,
     paddingHorizontal: 32,
-    borderRadius: 4,
+    borderRadius: 8,
     elevation: 3,
     backgroundColor: "black",
+    width: '100%',
   },
   text: {
     fontSize: 16,
